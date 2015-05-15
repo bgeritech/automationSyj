@@ -1,0 +1,81 @@
+package com.modules;
+
+import java.util.Set;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+
+public class Basic {
+	protected final WebDriver dr;
+	protected String url;
+	
+	
+	public Basic(WebDriver driver){
+		this.dr = driver;
+	}
+	
+	//获取页面
+	public void goTo(){
+		this.dr.get(this.url);
+	}
+	
+	//返回当前页面链接
+	public String currentUrl(){
+		return this.dr.getCurrentUrl();
+	}
+	
+	//多窗口打开处理
+	public void Multiwindows(){
+		Set<String> handles = this.dr.getWindowHandles();
+		String handle = this.dr.getWindowHandle();
+		handles.remove(this.dr.getWindowHandle());
+		WebDriver childDr = this.dr.switchTo().window(handles.iterator().next());
+		childDr.close();
+		this.dr.switchTo().window(handle);
+	}
+	//打开火狐浏览器
+	public static WebDriver openFireFox() {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.firefox.bin","C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
+		WebDriver driver = new FirefoxDriver();
+		return driver;
+	}
+	//打开
+	public static WebDriver openChrome() {
+		WebDriver dr1 = new ChromeDriver();
+		return dr1;
+		
+	}
+	
+	//处理主窗口已关闭子窗口未关闭的情况
+	public static void closeWebDriver(WebDriver driver){
+		if(driver == null)
+			return;
+		try{
+			String current = driver.getWindowHandle();  
+			Set<String> otherWins = driver.getWindowHandles();
+			for(String winId : otherWins)
+				if(winId.equals(current))
+					continue;
+				else
+					driver.switchTo().window(winId).close();		
+		}catch(Exception ex){
+			//ignore
+		}finally{
+			try{
+				driver.quit();
+			}catch(Exception ex){}
+		}
+	}
+	
+	//页面滚屏到底部处理
+	public void scrollScreen(){
+		((JavascriptExecutor)dr).executeScript("scrollTo(0,5000)");
+		
+	}
+	
+}

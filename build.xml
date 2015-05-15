@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="automationSyj" default="exec" basedir=".">
+
+	<property name="src" value="./src" />
+	<property name="libs" value="./libs" />
+	<property name="bin" value="./bin" />
+	<property name="report" value="./report" />
+	<path id="test.classpath">
+		<pathelement location="${bin}" />
+		<fileset dir="${libs}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="init">
+		<delete dir="${bin}" />
+		<mkdir dir="${bin}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac source="1.7" srcdir="${src}" fork="true" destdir="${bin}"
+			includeantruntime="false">
+			<classpath>
+				<pathelement path="${bin}">
+				</pathelement>
+				<fileset dir="${libs}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="exec" depends="compile">
+		<delete dir="${report}" />
+		<mkdir dir="${report}" />
+		<mkdir dir="${report}/xml" />
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath>
+				<pathelement location="${bin}" />
+				<fileset dir="${libs}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<test name="automation.TestDemo" haltonfailure="no" todir="${report}/xml"
+				outfile="TEST-result">
+				<formatter type="xml" />
+			</test>
+			<!--
+			<batchtest todir="${report}">
+				<fileset dir="${src}" includes="**/*Test*.java" />
+				<formatter type="xml" />
+			</batchtest>-->
+		</junit>
+		<junitreport todir="${report}">
+			<fileset dir="${report}/xml">
+				<include name="TEST*.xml" />
+			</fileset>
+			<report format="frames" todir="${report}/html" />
+		</junitreport>
+	</target>
+</project>

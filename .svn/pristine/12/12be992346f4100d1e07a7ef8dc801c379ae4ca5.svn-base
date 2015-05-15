@@ -1,0 +1,34 @@
+package com.testcase;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.dedicine.*;
+
+public class TestLogin {
+	WebDriver dr;
+	@Before
+	public void setUp() throws Exception {
+		System.out.println("Start test.");
+		this.dr = new ChromeDriver();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		System.out.println("End test.");
+		this.dr.quit();
+	}
+
+	@Test
+	public void testTestLogin() {
+		String userName = "18255658090";
+		String passWord = "test123";
+		PubLogin pubLogin = new PubLogin(this.dr);
+		pubLogin.login(userName, passWord);
+		System.out.println(dr.findElement(By.id("mess1")).getText() + "-µÇÂ½³É¹¦£¡");
+	}
+}

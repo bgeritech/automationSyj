@@ -1,0 +1,21 @@
+package com.modules;
+
+import org.openqa.selenium.WebDriver;
+
+public class Basic {
+	protected final WebDriver dr;
+	protected String url;
+	
+	public Basic(WebDriver driver){
+		this.dr = driver;
+	}
+	//获取页面
+	public void goTo(){
+		this.dr.get(this.url);
+	}
+	//返回当前页面链接
+	public String currentUrl(){
+		return this.dr.getCurrentUrl();
+	}
+	
+}

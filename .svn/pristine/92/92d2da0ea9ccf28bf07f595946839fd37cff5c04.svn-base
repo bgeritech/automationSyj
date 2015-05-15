@@ -1,0 +1,22 @@
+package com.dedicine;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class PubLogin {
+	WebDriver dr;
+	public PubLogin(WebDriver dr){
+		this.dr = dr;
+	}
+	/**
+	 * 公用登陆入口
+	 * userName:用户名
+	 * passWord：密码
+	 */
+	public void login(String userName,String passWord){
+		dr.get("http://uc.syj.com/member/login?to_url=http://www.syj.com/");
+		dr.findElement(By.id("login_email_id")).sendKeys(userName);
+		dr.findElement(By.id("loginPassword")).sendKeys(passWord);
+		dr.findElement(By.className("login_lk_login_btn")).click();
+	}
+}
